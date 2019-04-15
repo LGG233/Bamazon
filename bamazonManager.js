@@ -52,13 +52,14 @@ function firstAction(initialize) {
             lowInventory();
             return;
         case "Add to Inventory":
-            addInventory(thingToDo);
+            addInventory();
             return;
         case "Add New Product":
             addProduct();
             return;
         case "Exit":
             console.log("Signing out...")
+            connection.end();
             return;
         default:
             console.log("Please enter a valid command.");
@@ -68,16 +69,7 @@ function firstAction(initialize) {
 function viewInventory() {
     var query = "SELECT * FROM products";
     connection.query(query, function (err, res) {
-        var table = new Table({
-            head: ['ID', 'Product', 'Price', 'Quantity']
-            , colWidths: [8, 30, 12, 10]
-        });
-        for (var i = 0; i < res.length; i++) {
-            table.push(
-                [res[i].item_id, res[i].product_name, res[i].price, res[i].stock_quantity]
-            );
-        }
-        console.log(table.toString());
+        drawTable(res);
         startOperations();
     })
 }
@@ -85,16 +77,11 @@ function viewInventory() {
 function lowInventory() {
     var query = "SELECT * FROM products WHERE stock_quantity < 5";
     connection.query(query, function (err, res) {
-        var table = new Table({
-            head: ['ID', 'Product', 'Price', 'Quantity']
-            , colWidths: [8, 30, 12, 10]
-        });
-        for (var i = 0; i < res.length; i++) {
-            table.push(
-                [res[i].item_id, res[i].product_name, res[i].price, res[i].stock_quantity]
-            );
+        if (!res.length) {
+            console.log("\r\n--------------------------------------------\r\nNothing to display. Inventory is good on all items.\r\n--------------------------------------------\r\n")
+        } else {
+            drawTable(res);
         }
-        console.log(table.toString());
         startOperations();
     })
 }
@@ -113,28 +100,18 @@ function addInventory() {
         }
     ])
         .then(function (answer) {
-            connection.query("SELECT * FROM products WHERE ?", { item_id: answer.updateID }, function (err, res) {
-                console.log("\r\n--------------------------------------------\r\nUpdating Item " + answer.updateID + ". There are now " + answer.quantity + " items for sale.\r\n--------------------------------------------\r\n");
-                connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [answwer.quantity, res[0].item_id], function (error) {
-                    // connection.query("UPDATE products SET stock_quantity = ? WHERE stock_quantity = ?", [newQuantity, res[0].item_id], function (error) {
-                    if (error) throw err;
-                }
-                )
+            var newQuantity = answer.quantity;
+            var idToChange = answer.updateID;
+            console.log("\r\n--------------------------------------------\r\nUpdating Item " + answer.updateID + ". There are now " + answer.quantity + " items for sale.\r\n--------------------------------------------\r\n");
+            connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, idToChange], function (error) {
+                if (error) throw err;
             })
-        });
-    connection.query(query, function (err, res) {
-        var table = new Table({
-            head: ['ID', 'Product', 'Price', 'Quantity']
-            , colWidths: [8, 30, 12, 10]
-        });
-        for (var i = 0; i < res.length; i++) {
-            table.push(
-                [res[i].item_id, res[i].product_name, res[i].price, res[i].stock_quantity]
-            );
-        }
-        console.log(table.toString());
-        startOperations();
-    })
+            var query = "SELECT * FROM products";
+            connection.query(query, function (err, res) {
+                drawTable(res);
+                startOperations();
+            })
+        })
 };
 
 function addProduct() {
@@ -161,23 +138,34 @@ function addProduct() {
         }
     ])
         .then(function (answer) {
-            connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES = ?", [answer.mewItem, answer.newDept, answer.newPrice, answer.newQuantity]);
+            // var newItem = answer.newItem;
+            // var newDept = answer.newDept;
+            // var newPrice = answer.newPrice;
+            // var newQuantity = answer.newQuantity;
+            connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES = ?", [(
+                answer.newItem,
+                answer.newDept,
+                answer.newPrice,
+                answer.newQuantity
+            )]);
             if (error) throw err;
-        }
-        )
-    connection.query(query, function (err, res) {
-        var table = new Table({
-            head: ['ID', 'Product', 'Price', 'Quantity']
-            , colWidths: [8, 30, 12, 10]
-        });
-        for (var i = 0; i < res.length; i++) {
-            table.push(
-                [res[i].item_id, res[i].product_name, res[i].price, res[i].stock_quantity]
-            );
-        }
-        console.log(table.toString());
-        startOperations();
-    })
+            var query = "SELECT * FROM products";
+            connection.query(query, function (err, res) {
+                drawTable(res);
+                startOperations();
+            })
+        })
 };
 
-
+function drawTable(res) {
+    var table = new Table({
+        head: ['ID', 'Product', 'Department', 'Price', 'Quantity']
+        , colWidths: [8, 30, 30, 12, 10]
+    });
+    for (var i = 0; i < res.length; i++) {
+        table.push(
+            [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
+        );
+    }
+    console.log(table.toString());
+}

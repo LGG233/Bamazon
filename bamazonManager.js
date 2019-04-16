@@ -140,15 +140,18 @@ function addProduct() {
         .then(function (answer) {
             // var newItem = answer.newItem;
             // var newDept = answer.newDept;
-            // var newPrice = answer.newPrice;
+            var newPrice = parseFloat(answer.newPrice);
+            var newQuantity = parseInt(answer.newQuantity);
+            console.log(newPrice);
+            console.log(newQuantity);
             // var newQuantity = answer.newQuantity;
-            connection.query("INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES = ?", [(
+            connection.query("INSERT INTO `products`(`product_name`, `department_name`, `price`, `stock_quantity`) VALUES (?, ?, ?, ?)", [
                 answer.newItem,
                 answer.newDept,
-                answer.newPrice,
-                answer.newQuantity
-            )]);
-            if (error) throw err;
+                parseFloat(answer.newPrice),
+                parseInt(answer.newQuantity)
+            ]);
+            // if (error) throw err;
             var query = "SELECT * FROM products";
             connection.query(query, function (err, res) {
                 drawTable(res);
@@ -169,3 +172,9 @@ function drawTable(res) {
     }
     console.log(table.toString());
 }
+
+function validateNumber() {
+    if (typeof input !== 'number') {
+        console.log('You need to provide a number');
+    }
+};  

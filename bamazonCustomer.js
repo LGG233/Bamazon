@@ -21,6 +21,44 @@ connection.connect(function (err) {
     showStock();
 });
 
+// function buySomething() {
+//     inquirer.prompt([
+//         {
+//             name: "buyID",
+//             type: "input",
+//             message: "What would you like to buy?"
+//         },
+//         {
+//             name: "quantity",
+//             type: "input",
+//             message: "How many would you like to buy?"
+//         }
+//     ])
+//         .then(function (answer) {
+//             connection.query("SELECT * FROM products WHERE ?", { item_id: answer.buyID }, function (err, res) {
+//                 // if (error) throw err;
+//                 if (res[0].stock_quantity < answer.quantity) {
+//                     console.log("\r\n--------------------------------------------\r\nSorry, there are not that many available for purchase. Please start over.\r\n--------------------------------------------");
+//                 } else {
+//                     // var productSale = ((answer.quantity * res[0].price).toFixed(2));
+//                     // productSale =  + (res[0].product_sales.toFixed(2) + productSale);
+//                     // console.log(productSale);
+//                     var newQuantity = res[0].stock_quantity - answer.quantity;
+//                     console.log("\r\n--------------------------------------------\r\nYou just purchased " + answer.quantity + " " + res[0].product_name + " for $" + (answer.quantity * res[0].quantity) + ".\r\n--------------------------------------------\r\n");
+//                     console.log("\r\n--------------------------------------------\r\nThere are now " + newQuantity + " " + res[0].product_name + " remaining.\r\n--------------------------------------------\r\n");
+//                     connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, res[0].item_id], function (error) {
+//                         if (error) throw err;
+//                     })
+//                     // connection.query("UPDATE products SET products_sales = ? WHERE item_id = ?", [productSale, res[0].item_id], function (error) {
+//                     //     if (error) throw err;
+//                     // }                    )
+//                 }
+//                 stopShopping();
+//             });
+//         }
+//         )
+// };
+
 function buySomething() {
     inquirer.prompt([
         {
@@ -42,9 +80,18 @@ function buySomething() {
                     // buySomething();
                 } else {
                     var newQuantity = res[0].stock_quantity - answer.quantity;
+                    newQuantity = parseFloat(newQuantity);
+                    var newSale = (answer.quantity * res[0].price).toFixed(2);
+                    newSale = parseFloat(newSale);
+                    var newProductSale = res[0].product_sales + newSale;
+                    newProductSale = parseFloat(newProductSale);
                     console.log("\r\n--------------------------------------------\r\nYou just purchased " + answer.quantity + " " + res[0].product_name + " for $" + (answer.quantity * res[0].price).toFixed(2) + ".\r\n--------------------------------------------\r\n");
-                    console.log("\r\n--------------------------------------------\r\nThere are now " + newQuantity + " " + res[0].product_name + " remaining.\r\n--------------------------------------------\r\n");
+                    // console.log("\r\n--------------------------------------------\r\nThere are now " + newQuantity + " " + res[0].product_name + " remaining.\r\n--------------------------------------------\r\n");
                     connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, res[0].item_id], function (error) {
+                        if (error) throw err;
+                    }
+                    )
+                    connection.query("UPDATE products SET product_sales = ? WHERE item_id = ?", [newProductSale, res[0].item_id], function (error) {
                         if (error) throw err;
                     }
                     )

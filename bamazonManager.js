@@ -128,23 +128,22 @@ function addProduct() {
         },
         {
             name: "newPrice",
-            type: "input",
+            type: "number",
             message: "Please enter the price of the new product"
         },
         {
             name: "newQuantity",
-            type: "input",
+            type: "number",
             message: "Please enter the quantity of the new product"
         }
     ])
         .then(function (answer) {
-            // var newItem = answer.newItem;
-            // var newDept = answer.newDept;
+            if (typeof answer.newItem != 'string' || typeof answer.newDept != 'string') {
+                console.log("Please enter the correct information");
+                addProduct();
+            }
             var newPrice = parseFloat(answer.newPrice);
             var newQuantity = parseInt(answer.newQuantity);
-            console.log(newPrice);
-            console.log(newQuantity);
-            // var newQuantity = answer.newQuantity;
             connection.query("INSERT INTO `products`(`product_name`, `department_name`, `price`, `stock_quantity`) VALUES (?, ?, ?, ?)", [
                 answer.newItem,
                 answer.newDept,
@@ -171,10 +170,4 @@ function drawTable(res) {
         );
     }
     console.log(table.toString());
-}
-
-function validateNumber() {
-    if (typeof input !== 'number') {
-        console.log('You need to provide a number');
-    }
-};  
+};

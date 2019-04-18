@@ -60,7 +60,7 @@ function firstAction(initialize) {
 }
 
 function productSales() {
-    var query = "SELECT d.`department_id`, d.`department_name`, d.`over_head_costs`, p.`product_sales`, d.`total_profit` FROM products AS p JOIN departments AS d ON p.department_name = d.department_name GROUP BY department_name;";
+    var query = "SELECT d.`department_id`, d.`department_name`, d.`over_head_costs`, p.`product_sales`, d.`total_profit` FROM products AS p RIGHT JOIN departments AS d ON p.department_name = d.department_name GROUP BY department_name;";
     connection.query(query, function (err, res) {
         drawTable(res);
     })
@@ -84,7 +84,7 @@ function newDepartment() {
                 answer.newDept,
                 answer.overHead,
             ]);
-            var query = "SELECT d.`department_id`, d.`department_name`, d.`over_head_costs`, p.`product_sales`, d.`total_profit` FROM products AS p JOIN departments AS d ON p.department_name = d.department_name GROUP BY department_name;";
+            var query = "SELECT d.`department_id`, d.`department_name`, d.`over_head_costs`, p.`product_sales`, d.`total_profit` FROM products AS p RIGHT JOIN departments AS d ON p.department_name = d.department_name GROUP BY department_name;";
             connection.query(query, function (err, res) {
                 drawTable(res);
             })
@@ -97,14 +97,17 @@ function drawTable(res) {
         , colWidths: [15, 30, 22, 22, 22]
     });
     for (var i = 0; i < res.length; i++) {
-        console.log(res[i].product_sales)
-        var sales = parseInt(res[i].product_sales);
+        if ((res[i].product_sales) === null) {
+            var sales = 0;
+        } else {
+            var sales = parseInt(res[i].product_sales);
+        }
         var profits = parseInt(sales) - parseInt(res[i].over_head_costs);
         table.push(
             [res[i].department_id, res[i].department_name, parseInt(res[i].over_head_costs), parseInt(sales), parseInt(profits)]
         );
     }
     console.log("\r\n\r\nCurrent Bamazon Deparments Are As Follow:\r\n");
-    console.log(table.toString());
+    console.log(table.toString() + "\r\n\r\n");
     startOperations();
 }

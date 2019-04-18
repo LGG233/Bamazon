@@ -40,7 +40,7 @@ function buySomething(itemTotal) {
     ])
         .then(function (answer) {
             connection.query("SELECT * FROM products WHERE ?", { item_id: answer.buyID }, function (err, res) {
-\                if (res[0] === undefined) {
+                if (res[0] === undefined) {
                     console.log("Please enter a valid Product ID")
                 } else if (res[0].stock_quantity < answer.quantity) {
                     console.log("\r\n--------------------------------------------\r\nSorry, there are not that many available for purchase. Please start over.\r\n--------------------------------------------");

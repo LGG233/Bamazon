@@ -18,6 +18,8 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
     if (err) throw err;
+    console.clear();
+    console.log("\r\nWelcome to Bamazon, where you're never more than a few keystrokes away from everything you need!\r\n--------------------------------------------------------------------------------------------\r\nHere's what we have in the marketplace today:\r\n\r\n");
     showStock();
 });
 
@@ -68,7 +70,6 @@ function buySomething(itemTotal) {
 };
 
 function stopShopping() {
-    console.clear;
     inquirer.prompt([
         {
             name: "next",
@@ -82,13 +83,14 @@ function stopShopping() {
     ])
         .then(function (answer) {
             if (answer.next === "Exit") {
-                console.clear;
+                console.clear();
                 console.log("Thank you for shopping!");
                 connection.end();
                 return
             } else {
-                console.clear;
-                showStock();
+                console.clear();
+                console.log("\r\n\r\n--------------------------------------------------------------------------------------------\r\nHere's what we have in the marketplace today:\r\n\r\n");
+                            showStock();
             }
         })
 };

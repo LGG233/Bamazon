@@ -18,11 +18,16 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
     if (err) throw err;
-    startOperations();
+    console.clear();
+    console.log("\r\nWelcome to Bamazon Manager. Please select your operation below.\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
+    var query = "SELECT * FROM products";
+    connection.query(query, function (err, res) {
+        drawTable(res);
+        startOperations();
+    })
 });
 
 function startOperations() {
-    console.clear;
     inquirer.prompt([
         {
             name: "start",
@@ -67,6 +72,8 @@ function firstAction(initialize) {
 }
 
 function viewInventory() {
+    console.clear();
+    console.log("\r\n\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
     var query = "SELECT * FROM products";
     connection.query(query, function (err, res) {
         drawTable(res);
@@ -102,10 +109,11 @@ function addInventory() {
         .then(function (answer) {
             var newQuantity = answer.quantity;
             var idToChange = answer.updateID;
-            console.log("\r\n--------------------------------------------\r\nUpdating Item " + answer.updateID + ". There are now " + answer.quantity + " items for sale.\r\n--------------------------------------------\r\n");
             connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, idToChange], function (error) {
                 if (error) throw err;
             })
+            console.clear();
+            console.log("\r\n--------------------------------------------\r\nUpdating Item " + answer.updateID + ". There are now " + answer.quantity + " items for sale.\r\n--------------------------------------------\r\n\r\n");
             var query = "SELECT * FROM products";
             connection.query(query, function (err, res) {
                 drawTable(res);

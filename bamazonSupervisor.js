@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 });
 
 console.clear();
-console.log("\r\nWelcome to Bamazon Supervisor. ")
+console.log("\r\nWelcome to Bamazon Manager.\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
 connection.connect(function (err) {
     if (err) throw err;
     startOperations();
@@ -28,7 +28,7 @@ function startOperations() {
         {
             name: "start",
             type: "list",
-            message: "What would you like to do?\r\n\r\n",
+            message: "Please select your operation below.\r\n\r\n",
             choices: [
                 "View Product Sales by Department",
                 "Create New Department",
@@ -67,6 +67,8 @@ function productSales() {
 }
 
 function newDepartment() {
+    console.clear();
+    console.log("\r\\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
     inquirer.prompt([
         {
             name: "newDept",

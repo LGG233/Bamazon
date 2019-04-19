@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 });
 
 console.clear();
-console.log("\r\nWelcome to Bamazon Manager.\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
+console.log("\r\nWelcome to Bamazon Supervisor.\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
 connection.connect(function (err) {
     if (err) throw err;
     startOperations();
@@ -30,7 +30,7 @@ function startOperations() {
             type: "list",
             message: "Please select your operation below.\r\n\r\n",
             choices: [
-                "View Product Sales by Department",
+                "View Sales by Department",
                 "Create New Department",
                 "Exit"
             ]
@@ -44,7 +44,7 @@ function startOperations() {
 
 function firstAction(initialize) {
     switch (initialize) {
-        case "View Product Sales by Department":
+        case "View Sales by Department":
             productSales();
             return;
         case "Create New Department":
@@ -68,7 +68,7 @@ function productSales() {
 
 function newDepartment() {
     console.clear();
-    console.log("\r\\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
+    console.log("\r\n\r\n--------------------------------------------------------------------------------------------\r\n\r\n");
     inquirer.prompt([
         {
             name: "newDept",

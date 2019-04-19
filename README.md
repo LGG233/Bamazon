@@ -1,45 +1,54 @@
 # Bamazon
 
-Online shopping was never easier for customers and managers alike. 
+Online shopping was never easier. Customers and managers alike will appreciate the simplicity of Bamazon, the online app that lets shoppers buy products and supervisors manage stock with just a few keystrokes. Here's how it works:
 
-Bamazon is an online shopping app with three levels of access and functionality. Customers can run the app and 
+# For Customers
 
-# Customer Access
-# Liri -- Siri's Node-based Cousin
+Simply type "node bamazonCustomer" into the terminal to run the Bamazon shopping app. On startup, you'll be presented with a list of items for sale, prices, and the available quantity for each:
+![Customer Startup](/images/customer-startup.jpg)
 
-Want to hear a snippet of that song your best friend recommended? Liri can help. Want to know where your favorite band is playing? Put the question to Liri. Looking for more info about the latest Hollywood blockbuster - actors, language, Rotten Tomatoes score, and more? Nothing could be easier when you ask Liri.
+At the prompt, you'll enter the Product ID of the item you wish to purchase, along with the number of items you want to buy, and hit return. If there aren't enough items to fill your order, you'll get an "insufficient quantity" alert and a request to start over:
 
-Liri is a node-based app that looks up concert, song, and movie information and displays it in your terminal. Here's how it works:
+![Insufficient Quantity](/images/insufficient-quantity.jpg)
 
-# Concert Info
+If all goes well, Bamazon tells you your purchase has gone through, and provides the total cost of your order:
+![Successful Purchase](/images/customer-purchase.jpg)
 
-To get the latest tour schedule of your favorite group, type "node liri concert-this" followed by the name of the group, like The Black Keys or Mountain Goats or Parkay Courts. You'll see upcoming shows of your band - city, venue, and date - so you can jump over to Ticketmaster or SeatGeek and buy tickets. Here's what it looks like: ![Concert Search](/images/concert-the-black-keys.jpg). 
+Keep shopping as long as you'd like, then select "Exit" to end the program
 
-Liri tells you when the group you want to see isn't touring, too. ![Not On Tour](/images/concert-chuck-berry.jpg) 
+# For Managers
 
-# Spotify Song List
+Bamazon managers can perform a number of operations:
+- view products for sale,
+- view low inventory,
+- add inventory, and 
+- add new products.
 
-Liri digs deep into Spotify to give you up-to-date info on any song in the Spotify library. Simply type "node liri spotify-this-song" followed by the name of the song you're seeking, and Liri generates a list of songs and artists that match your search: ![Spotify Search Results](/images/spotify-results.jpg) If available, Liri will even give you a Preview URL for that song. 
+Type "node bamazonManager" to launch the app; you'll be presented with a startup screen listing the products currently available in the marketplace:
+![Mananger Startup](/images/manager-startup.jpg)
 
-Of course, Liri tells you if your search produces no hits so you can look for another tune. ![Spotify No Results](/images/spotify-not-found.jpg). 
+Selecting "View Products for Sale" reloads the list of items, and can be done at any point to refresh the screen.
 
-# Movie Details
+Picking "View Low Inventory" will give you a list of items for which there are fewer than five items available:
+![Low Inventory](/images/low-inventory.jpg)
 
-Liri can help you decide what to watch tonight (or any night!) through its movie search which pulls details on any film in the Online Movie Database library. Type "movie-this" and the name of the film you're considering, and Liri returns information on that film that helps you make a decision: IMDB rating, Rotten Tomatoes score, principal cast, a brief plot summary, and more. ![Movie results](/images/movie-search.jpg)
+Choosing "Add to Inventory" lets you increase the stock quantity of any item on the list. You'll merely add the Product ID and the updated quantity, and Bamazon automatically updates the list and refreshes the screen to show you the update was properly processed:
 
-# Let Liri Decide
+![Add to Inventory](/images/add-to-inventory.jpg)
 
-Can't decide what to do? Just ask Liri. Type "do-what-it-says," and Liri will recommend a movie, song, or concert.
+Finally, you can add new products to the marketplace by selecting "Add New Product." Bamazon will ask you to provide the name, department, price, and stock quantity of the product ![Add New Product](/images/add-new-product.jpg) and then refresh the display to show your item has been updated:
+![Successful Product Addition](/images/new-product-added.jpg)
 
-# Observations
+# For Supervisors
 
-Liri was a fun app to develop. It's deceivingly complex, primarily because of the Spotify API, which required significant time to identify the information I was looking for in the results. Although the app runs in a different environment, the functionality and the code used in the Node app were essentially the same as various things we've alreadyin the bootcamp. 
+Supervisors at Bamazon are authorized to access sales data for each department. In addition, they can add new departments to Bamazon. Type "node bamazonSupervisor" to launch the app and you'll see the startup screen:
+![Supervisor Startup](/images/supervisor-startup.jpg)
 
-Nevertheless, the homework allowed me to work with a number of new items, including:
-- Using Node modules (in this project: Spotify, Axios, moment.js, and fs)
-- Using process.argv to capture user input
-- Using a switch instead of "if...else" statements, then wrapping that switch in a function
-- Using "keys.js" to keep my Spotify key out of GitHub
+To view sales data, select "View Sales by Department:"
+![View Sales Data](/images/view-sales.jpg)
 
+Sales information is refreshed each time you request the data, so includes up-to-date sales data from the marketplace.
 
+Creating new departments is simple. Just select "Add new department" and provide the name of and total overhead costs for the new department. The screen automatically refreshes to confirm that the database has been updated:
+![New Department Added](/images/new-department.jpg) 
 

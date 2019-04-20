@@ -52,3 +52,14 @@ Sales information is refreshed each time you request the data, so includes up-to
 Creating new departments is simple. Just select "Add new department" and provide the name of and total overhead costs for the new department. The screen automatically refreshes to confirm that the database has been updated:
 ![New Department Added](/images/new-department.jpg) 
 
+# Observations
+This assignment was challenging, and introduced a number of new concepts and tools, including in particular creating and using a MySQL database. That said, it was very useful to move away from more contrived exercises (eg the Hangman games) to more practical applications that use the technology we're learning.
+
+# App elements
+- MySQL (new)
+    - Create database
+    - Create and query the MySQL server
+    - Perform mathmatical operations on the data
+- NPM Modules
+    - Inquirer
+    - CLI-Table (new)
